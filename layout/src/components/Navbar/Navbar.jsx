@@ -22,7 +22,7 @@ export const Navbar = () => {
   const handleMenu = (title) => {
     generateID()
     dispatch(AddTab({ name: title.slug, id: lastID }))
-    setNavbarData(title.slug)
+    // setNavbarData(title.slug)
   }
   useEffect(() => {
     console.log(tabSelector.component)
