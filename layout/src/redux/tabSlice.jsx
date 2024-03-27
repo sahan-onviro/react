@@ -8,20 +8,15 @@ const TabSlice = createSlice({
         component: {},
     },
     reducers: {
-
         ViewTab: (state, action) => {
             const findTitle = state.title.findIndex((title, index) => title.name === action.payload.name);
             state.component = state.title[findTitle].name;
         },
         AddTab: (state, action) => {
             const existingIndex = state.title.findIndex((title, index) => title.name === action.payload.name);
-
-            //findIndex ley index vetayena vaney -1 dinxa
+            state.component = action.payload.name;
             if (existingIndex === -1) {
                 state.title = [...state.title, { name: action.payload.name, id: action.payload.id }];
-                const currentTitle = state.title.filter((title, index) => title.name === action.payload.name);
-                let firstObject = currentTitle.find(obj => obj.name === action.payload.name);
-                state.component = firstObject.name
             }
         },
         RemoveTab: (state, action) => {
@@ -45,8 +40,11 @@ const TabSlice = createSlice({
             }
             // Remove the tab from the tabs array
             state.title.splice(removedIndex, 1);
+        },
+        ViewMenuContent:(state,action)=>{
+            state.component = action.payload
         }
     }
 })
-export const { AddTab, RemoveTab, ViewTab } = TabSlice.actions
+export const { AddTab, RemoveTab, ViewTab, ViewMenuContent } = TabSlice.actions
 export default TabSlice

@@ -2,14 +2,22 @@ import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useLayoutData } from '../../globals/Context/Layout';
+import { useDispatch } from 'react-redux';
+import { ViewMenuContent } from '../../redux/tabSlice';
+import { v4 as uuidv4 } from 'uuid';
 
 const Contact = () => {
-    const { setNavbarData, getId } = useLayoutData();
+    const { getId, setId } = useLayoutData();
     const [editMode, setEditMode] = useState(false);
-    const [idData, setIdData] = useState('');
     const [editIdData, setEditIdData] = useState({});
+
+    const dispatch = useDispatch();
     const dataLocal = JSON.parse(localStorage.getItem('contactData'));
 
+    const generateID = () => {
+        const uniqueID = uuidv4();
+        return uniqueID;
+    };
     const initialValues = {
         name: '',
         phone: '',
@@ -17,12 +25,35 @@ const Contact = () => {
         address: '',
         message: '',
     }
+    const schema = Yup.object().shape({
+        name: Yup.string().required("required"),
+        phone: Yup.number().required("required"),
+        email: Yup.string().required("required"),
+        address: Yup.string().required("required"),
+        message: Yup.string().required("required"),
+    })
+    const handleSubmitForm = (values) => {
+        let datas = JSON.parse(localStorage.getItem('contactData'));
+        console.log(datas);
+        if (editMode) {
+            datas = datas.map((item, index) => (item.id === editIdData.id ? { ...values, id: editIdData.id } : item))
+        }
+        else {
+            const data = {
+                id: generateID(),
+                ...values,
+            }
+            datas.push(data);
+        };
+        localStorage.setItem('contactData', JSON.stringify(datas));
+        dispatch(ViewMenuContent('Table'))
+    }
     useEffect(() => {
         if (getId) {
             setEditMode(true);
             const selectedIdData = dataLocal.find((item) => item.id === getId);
-            setIdData(selectedIdData);
             setEditIdData({
+                id: selectedIdData.id,
                 name: selectedIdData.name,
                 phone: selectedIdData.phone,
                 email: selectedIdData.email,
@@ -34,14 +65,11 @@ const Contact = () => {
             setEditMode(false); // Set editMode to false when getId is null
             setEditIdData({});
         }
-    }, [getId, setEditMode])
-    const schema = Yup.object().shape({
-        name: Yup.string().required("required"),
-        phone: Yup.number().required("required"),
-        email: Yup.string().required("required"),
-        address: Yup.string().required("required"),
-        message: Yup.string().required("required"),
-    })
+        return () => {
+            setId('');
+        };
+    }, [setId])
+
     return (
         <>
             <section className='contact-page'>
@@ -49,22 +77,7 @@ const Contact = () => {
                     initialValues={editMode ? editIdData : initialValues}
                     enableReinitialize={true}
                     validationSchema={schema}
-                    onSubmit={(values) => {
-                        let datas = JSON.parse(localStorage.getItem('contactData'));
-                        if (editMode) {
-                            datas = datas.map((item, index) => (item.id === getId ? { ...values, id: getId } : item))
-                            setNavbarData('Table');
-
-                        }
-                        else {
-                            const data = {
-                                id: Math.floor(Math.random() * 100) + 1,
-                                ...values,
-                            }
-                            datas.push(data);
-                        };
-                        localStorage.setItem('contactData', JSON.stringify(datas));
-                    }}
+                    onSubmit={handleSubmitForm}
                 >
                     {formik => (
                         <Form onSubmit={formik.handleSubmit}>

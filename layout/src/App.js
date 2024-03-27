@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useLayoutData } from './globals/Context/Layout';
 import { Navbar } from './components/Navbar/Navbar';
-import Homepage from './components/homepage/Homepage';
-import About from './components/about/About';
-import Contact from './components/contact/Contact';
-import Table from './components/table/Table';
 import { compObj } from './globals/Data/compObj';
+import { useSelector } from 'react-redux';
 const App = () => {
 
-  const { navbarData, setNavbarData, setSelectComp, selectComp } = useLayoutData();
+  const { setSelectComp, selectComp } = useLayoutData();
+  const menuSelector = useSelector((state) => state.tabmenu.component)
   useEffect(() => {
-    setSelectComp(compObj[navbarData])
-  }, [navbarData])
-  console.log("app ko :",navbarData);
+    setSelectComp(compObj[menuSelector])
+  }, [menuSelector, setSelectComp])
   return (
     <>
       <Navbar />

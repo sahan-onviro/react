@@ -1,5 +1,4 @@
-import React, { useEffect, useId, useState } from 'react';
-import { useLayoutData } from '../../globals/Context/Layout';
+import React, { useState } from 'react';
 import { NavbarData } from '../../globals/Data/navbarData'; // Assuming this is correct
 import { useDispatch, useSelector } from 'react-redux';
 import { AddTab, RemoveTab, ViewTab } from '../../redux/tabSlice';
@@ -8,7 +7,6 @@ import { IoMdClose } from "react-icons/io";
 
 
 export const Navbar = () => {
-  const { navbarData, setNavbarData, setSelectComp, selectComp } = useLayoutData();
 
   const dispatch = useDispatch();
   const tabSelector = useSelector((state => state.tabmenu))
@@ -22,13 +20,7 @@ export const Navbar = () => {
   const handleMenu = (title) => {
     generateID()
     dispatch(AddTab({ name: title.slug, id: lastID }))
-    // setNavbarData(title.slug)
   }
-  useEffect(() => {
-    console.log(tabSelector.component)
-    setNavbarData(tabSelector.component);
-  }, [tabSelector.component]);
-
   const handleCloseBtn = (item) => {
     dispatch(RemoveTab(item));
   }
@@ -41,8 +33,8 @@ export const Navbar = () => {
       <header>
         <nav>
           <ul>
-            {NavbarData.map((item, index) => (
-              <li key={index} onClick={() => handleMenu(item)}>{item.name}</li>
+            {NavbarData.map((item, i) => (
+              <li key={i} onClick={() => handleMenu(item)}>{item.name}</li>
             ))}
           </ul>
         </nav>

@@ -1,21 +1,22 @@
 import React, { useState } from 'react'
 import { useLayoutData } from '../../globals/Context/Layout';
+import { useDispatch } from 'react-redux';
+import { ViewMenuContent } from '../../redux/tabSlice';
 
 const Table = () => {
-  const { navbarData,setNavbarData,getId, setId } = useLayoutData();
-  // const { contactData, setContactData } = useLayoutData();
+  const { setId } = useLayoutData();
   const [contactD, setContactD] = useState(JSON.parse(localStorage.getItem(`contactData`)));
+
+  const dispatch = useDispatch();
+  
   const handleDeletebtn = (index) => {
     const updateData = contactD.filter((item, i) => i !== index);
     localStorage.setItem('contactData', JSON.stringify(updateData));
-    updateContactD(updateData);
-  }
-  const updateContactD = (updatedData) => {
-    setContactD(updatedData)
+    setContactD(updateData)
   }
   const handleEdit = (item) => {
     setId(item.id)
-    setNavbarData('Contact');
+    dispatch(ViewMenuContent('Contact'));
   }
   return (
     <section className='table-contact'>
@@ -31,16 +32,6 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-
-          {/* {contactD?.map((item, index) => (
-            <tr key={index}>
-              <td>{item?.name}</td>
-              <td>{item?.phone}</td>
-              <td>{item?.email}</td>
-              <td>{item?.address}</td>
-              <td>{item?.message}</td>
-            </tr>
-          ))} */}
 
           {contactD?.map((item, index) => (
             <tr key={index}>
