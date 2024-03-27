@@ -5,6 +5,7 @@ import { useLayoutData } from '../../globals/Context/Layout';
 import { useDispatch } from 'react-redux';
 import { ViewMenuContent } from '../../redux/tabSlice';
 import { v4 as uuidv4 } from 'uuid';
+import { useRef } from 'react';
 
 const Contact = () => {
     const { getId, setId } = useLayoutData();
@@ -48,6 +49,20 @@ const Contact = () => {
         localStorage.setItem('contactData', JSON.stringify(datas));
         dispatch(ViewMenuContent('Table'))
     }
+    const formRef = useRef(null);
+
+    const handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault(); // Prevent form submission
+            const inputs = formRef.current.querySelectorAll('input, select, textarea');
+            const index = Array.prototype.indexOf.call(inputs, event.target);
+            const nextInput = inputs[index + 1];
+            if (nextInput) {
+                nextInput.focus(); // Focus on the next input field
+            }
+        }
+    };
+
     useEffect(() => {
         if (getId) {
             setEditMode(true);
@@ -80,30 +95,30 @@ const Contact = () => {
                     onSubmit={handleSubmitForm}
                 >
                     {formik => (
-                        <Form onSubmit={formik.handleSubmit}>
+                        <Form onSubmit={formik.handleSubmit} ref={formRef}>
                             <div className="form-group">
                                 <label htmlFor="" className="form-label">name</label>
-                                <Field type="text" className='form-control' onChange={formik.handleChange} value={formik.values.name} name="name" placeholder="Name" />
+                                <Field type="text" className='form-control' onKeyPress={(event) => handleKeyPress(event)} onChange={formik.handleChange} value={formik.values.name} name="name" placeholder="Name" />
                                 <ErrorMessage component="div" name='name' className='error' />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="" className="form-label">phone</label>
-                                <Field type="phone" className='form-control' onChange={formik.handleChange} value={formik.values.phone} name="phone" placeholder="phone" />
+                                <Field type="phone" className='form-control' onKeyPress={(event) => handleKeyPress(event)} onChange={formik.handleChange} value={formik.values.phone} name="phone" placeholder="phone" />
                                 <ErrorMessage component="div" name='phone' className='error' />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="" className="form-label">email</label>
-                                <Field type="email" className='form-control' onChange={formik.handleChange} value={formik.values.email} name="email" placeholder="email" />
+                                <Field type="email" className='form-control' onKeyPress={(event) => handleKeyPress(event)} onChange={formik.handleChange} value={formik.values.email} name="email" placeholder="email" />
                                 <ErrorMessage component="div" name='email' className='error' />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="" className="form-label">address</label>
-                                <Field type="text" className='form-control' onChange={formik.handleChange} value={formik.values.address} name="address" placeholder="address" />
+                                <Field type="text" className='form-control' onKeyPress={(event) => handleKeyPress(event)} onChange={formik.handleChange} value={formik.values.address} name="address" placeholder="address" />
                                 <ErrorMessage component="div" name='address' className='error' />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="" className="form-label">message</label>
-                                <Field as="textarea" type="text" className='form-control' onChange={formik.handleChange} value={formik.values.message} name="message" placeholder="message" />
+                                <Field as="textarea" type="text" className='form-control' onKeyPress={(event) => handleKeyPress(event)} onChange={formik.handleChange} value={formik.values.message} name="message" placeholder="message" />
                                 <ErrorMessage component="div" name='message' className='error' />
                             </div>
                             <div className="btn-wrapper">
