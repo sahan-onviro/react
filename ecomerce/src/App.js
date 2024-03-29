@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { lazy, Suspense } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-function App() {
+import Navbar from "./components/Navbar/Navbar";
+const HomePage = lazy(() => import("./pages/Homepage/Homepage"));
+const Cart = lazy(() => import("././pages/Cart/Cart"));
+const Product = lazy(() => import("./pages/Product/Product"));
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar />
+      <Suspense fallback={<div>..loading</div>}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/products" element={<Product />} />
+        </Routes>
+      </Suspense>
+    </>
   );
-}
+};
 
 export default App;
