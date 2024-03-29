@@ -6,10 +6,17 @@ import { deleteProduct } from "../../redux/reducers/productSlice";
 const Cart = () => {
   const viewAdded = useSelector((s) => s.product.products);
   const dispatch = useDispatch();
-  const handleRemoveItem = ({item,index}) =>{
+  const handleRemoveItem = ({ item, index }) => {
     dispatch(deleteProduct(item));
-  }
-  console.log(viewAdded);
+  };
+  const totalPrice = () => {
+    let price = 0;
+    for (let i = 0; i < viewAdded.length; i++) {
+      price += viewAdded[i].price;
+    }
+    return price
+  };
+
   return (
     <>
       <section className="cart">
@@ -28,10 +35,14 @@ const Cart = () => {
               <tbody>
                 {viewAdded.map((item, i) => (
                   <tr key={i} className="view-product-box">
-                    <td>{i+1}</td>
+                    <td>{i + 1}</td>
                     <td>
                       <figure className="w-64 mx-auto">
-                        <img className="object-contain object-center" src={item.image} alt={item.name} />
+                        <img
+                          className="object-contain object-center"
+                          src={item.image}
+                          alt={item.name}
+                        />
                       </figure>
                     </td>
                     <td>
@@ -41,13 +52,26 @@ const Cart = () => {
                       <h5>Rs. {item.price}</h5>
                     </td>
                     <td>
-                      <span className="flex justify-center" onClick={()=>handleRemoveItem({item,i})}>
+                      <span
+                        className="flex justify-center"
+                        onClick={() => handleRemoveItem({ item, i })}
+                      >
                         <BsTrash3 />
                       </span>
                     </td>
                   </tr>
                 ))}
               </tbody>
+              <tfoot>
+                <tr>
+                  <td colSpan={3}>
+                    <h2>Total Price</h2>
+                  </td>
+                  <td colSpan={2} align="left">
+                  <p>Rs. {totalPrice()}</p>
+                  </td>
+                </tr>
+              </tfoot>
             </table>
           </div>
           <ul></ul>
