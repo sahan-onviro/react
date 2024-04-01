@@ -65,6 +65,7 @@ const Contact = () => {
 
     useEffect(() => {
         if (getId) {
+            console.log(getId);
             setEditMode(true);
             const selectedIdData = dataLocal.find((item) => item.id === getId);
             setEditIdData({
