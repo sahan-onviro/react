@@ -16,16 +16,19 @@ const Inquiry = () => {
       name: "name",
       type: "text",
       cols: "full",
+      as: "input",
     },
     {
       name: "phone",
       type: "number",
       cols: "1",
+      as: "input",
     },
     {
       name: "email",
       type: "email",
       cols: "1",
+      as: "input",
     },
     {
       name: "messages",
@@ -37,6 +40,40 @@ const Inquiry = () => {
       cols: "full",
       as: "select",
       option: formObj.map((item) => ({ name: item?.name, value: item?.name })),
+    },
+    {
+      name: "skill",
+      type: "checkbox",
+      cols: "1",
+      option: [
+        {
+          optitem: "running",
+          value: "running",
+        },
+        {
+          optitem: "hiking",
+          value: "hiking",
+        },
+        {
+          optitem: "sleeping",
+          value: "sleeping",
+        },
+      ],
+    },
+    {
+      name: "isActive",
+      type: "radio",
+      cols: "1",
+      option: [
+        {
+          optitem: "yes",
+          value: "yes",
+        },
+        {
+          optitem: "no",
+          value: "no",
+        },
+      ],
     },
   ];
   const validationSchema = Yup.object().shape({

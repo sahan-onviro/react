@@ -20,7 +20,7 @@ const FormSection = ({ initial, schema, submit, settings }) => {
                         <label htmlFor="" className="form-label">
                           {item?.name}
                         </label>
-                        {item?.as === "select" && item?.option ? (
+                        {(item?.as === "select" && item?.option && (
                           <Field
                             as={item?.as || null}
                             type={item?.type || null}
@@ -28,33 +28,67 @@ const FormSection = ({ initial, schema, submit, settings }) => {
                             onChange={formik.handleChange}
                             placeholder={item?.name}
                             name={item?.name}
-                            defaultValue="DEFAULT"
                           >
+                            <option value="" disabled>
+                              Selected
+                            </option>
+                            {item?.option?.map((item, index) => (
+                              <option value={item?.name} key={index}>
+                                {item?.name}
+                              </option>
+                            ))}
+                          </Field>
+                        )) ||
+                          ((item?.as === "input" ||
+                            item?.as === "textarea") && (
+                            <Field
+                              as={item?.as || null}
+                              type={item?.type || null}
+                              className="form-control border border-solid border-green-400"
+                              onChange={formik.handleChange}
+                              placeholder={item?.name}
+                              name={item?.name}
+                            />
+                          )) ||
+                          (item?.type === "checkbox" && (
                             <>
-                            <option value="DEFAULT" disabled>Selected</option>
-                              {item?.option?.map((item, index) => (
-                                <option value={item?.name} key={index}>
-                                  {item?.name}
-                                </option>
+                              {item.option.map((opt) => (
+                                <div className="form-check">
+                                  <Field
+                                    type={item?.type || null}
+                                    className="form-control border border-solid border-green-400"
+                                    onChange={formik.handleChange}
+                                    placeholder={item?.name}
+                                    name={item?.name}
+                                    value={opt?.value}
+                                  />
+                                  <span>{opt?.optitem}</span>
+                                </div>
                               ))}
                             </>
-                          </Field>
-                        ) : (
-                          <Field
-                            as={item?.as || null}
-                            type={item?.type || null}
-                            className="form-control border border-solid border-green-400"
-                            onChange={formik.handleChange}
-                            placeholder={item?.name}
-                            name={item?.name}
-                          />
-                        )}
+                          )) ||
+                          (item?.type === "radio" && (
+                            <>
+                              {item.option.map((opt) => (
+                                <div className="form-radio">
+                                  <Field
+                                    type={item?.type || null}
+                                    className="form-control border border-solid border-green-400"
+                                    onChange={formik.handleChange}
+                                    placeholder={item?.name}
+                                    name={item?.name}
+                                    value={opt?.value}
+                                  />
+                                  <span>{opt?.optitem}</span>
+                                </div>
+                              ))}
+                            </>
+                          ))}
 
                         <ErrorMessage
                           component="div"
                           name={item?.name}
-                          className="error"
-                          Style="color:red;"
+                          className="error text-red-400"
                         />
                       </div>
                     </div>
