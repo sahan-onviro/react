@@ -10,8 +10,8 @@ const Inquiry = () => {
     email: "",
     messages: "",
     country: "",
-    skill: "",
-    isActive: "",
+    skill: [],
+    isActive: null,
   };
   const customControl = [
     {
@@ -86,8 +86,8 @@ const Inquiry = () => {
     country: Yup.string().required("country"),
     skil: Yup
       .bool()
-      .oneOf([true], "You need to select one"),
-      isActive: Yup.boolean().required('required'),
+      .oneOf([true], "You need to select one").required(),
+      isActive: Yup.boolean().required().oneOf([true , false]),
   });
   const handleSumbit = (values) => {
     console.log(values);

@@ -77,7 +77,7 @@ const FormSection = ({ initial, schema, submit, settings }) => {
                                     onChange={formik.handleChange}
                                     placeholder={item?.name}
                                     name={item?.name}
-                                    value={opt?.value}
+                                    value={Boolean(opt?.value)}
                                     checked={null}
                                   />
                                   <span>{opt?.optitem}</span>
