@@ -34,8 +34,9 @@ export const Navbar = () => {
         <nav>
           <ul>
             {NavbarData.map((item, i) => (
-              <li key={i} onClick={() => handleMenu(item)}>{item.name}</li>
-            ))}
+              <React.Fragment key={i}>
+              <li onClick={() => handleMenu(item)}>{item.name}</li>
+              </React.Fragment>))}
           </ul>
         </nav>
       </header>

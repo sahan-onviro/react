@@ -15,4 +15,8 @@ export const NavbarData = [
         name: 'Contact Table',
         slug: 'Table'
     },
+    {
+        name: 'Inquiry',
+        slug: 'Inquiry'
+    },
 ]
