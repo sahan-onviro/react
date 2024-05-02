@@ -78,6 +78,7 @@ const FormSection = ({ initial, schema, submit, settings }) => {
                                     placeholder={item?.name}
                                     name={item?.name}
                                     value={opt?.value}
+                                    checked={null}
                                   />
                                   <span>{opt?.optitem}</span>
                                 </div>
