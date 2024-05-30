@@ -19,4 +19,8 @@ export const NavbarData = [
         name: 'Inquiry',
         slug: 'Inquiry'
     },
+    {
+        name: 'support',
+        slug: 'Support'
+    },
 ]
