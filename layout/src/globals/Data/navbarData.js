@@ -20,6 +20,10 @@ export const NavbarData = [
         slug: 'Inquiry'
     },
     {
+        name: 'InquiryTable',
+        slug: 'InquiryTable'
+    },
+    {
         name: 'support',
         slug: 'Support'
     },
